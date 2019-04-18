@@ -24,6 +24,7 @@ dependencies:
 - ConfigFile
 - mtl
 - transformers
+- split
 
 library:
   source-dirs: src
