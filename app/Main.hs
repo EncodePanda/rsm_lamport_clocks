@@ -16,4 +16,4 @@ readNodes :: String -> ExceptT AppError IO [Node]
 readNodes configFile =  do
   conf <- withExceptT AppCPError $ join $ liftIO $ readfile emptyCP configFile
   hosts <- withExceptT AppCPError $ get conf "DEFAULT" "hosts"
-  return $ parseNodeAddresses hosts
+  withExceptT AppNodeError $ except $ parseNodeAddresses hosts
