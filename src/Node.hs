@@ -2,6 +2,7 @@ module Node where
 
 import Data.List.Split
 import Data.List.NonEmpty
+import Data.String.Utils
 
 data NodeError = NodeAddressNotParsable String deriving (Show, Eq)
 
@@ -13,5 +14,5 @@ data Node = Node Host Port
 parseNodeAddresses :: String -> Either NodeError (NonEmpty Node)
 parseNodeAddresses =  fmap fromList . traverse (toNode . (splitOn ":")) . (splitOn ",")
   where
-    toNode (host:port:[]) = Right $ Node host (read port)
+    toNode (host:port:[]) = Right $ Node (strip host) (read $ strip port)
     toNode line = Left $ NodeAddressNotParsable $ show line

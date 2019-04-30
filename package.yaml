@@ -25,6 +25,7 @@ dependencies:
 - mtl
 - transformers
 - split
+- MissingH
 
 library:
   source-dirs: src
