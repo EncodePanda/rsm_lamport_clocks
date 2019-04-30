@@ -9,8 +9,9 @@ type Port = Int
 data Node = Node Host Port
   deriving Show
 
-parseNodeAddresses :: String -> [Node]
-parseNodeAddresses =  fmap (toNode . (splitOn ":")) . (splitOn ",")
+parseNodeAddresses :: String -> Either NodeError [Node]
+parseNodeAddresses =  traverse (toNode . (splitOn ":")) . (splitOn ",")
   where
-    toNode (host:port:[]) = Node host (read port)
+    toNode (host:port:[]) = Right $ Node host (read port)
+    toNode line = Left $ NodeAddressNotParsable $ show line
 
