@@ -31,9 +31,9 @@ library:
   source-dirs: src
 
 executables:
-  rsm-lamport-clocks-exe:
+  rsm-node:
     main:                Main.hs
-    source-dirs:         app
+    source-dirs:         node
     ghc-options:
     - -threaded
     - -rtsopts
