@@ -6,12 +6,14 @@ import Control.Monad.Except
 import Control.Monad.Trans.Except
 import Node
 
-data AppError = AppCPError CPError | AppNodeError NodeError
+data AppError = AppCPError CPError
+              | AppNodeError NodeError
+                deriving Show
 
 main :: IO ()
 main = do
-  Right nodes <- runExceptT $ readNodes "app.conf"
-  putStrLn (show nodes)
+  nodesErr <- runExceptT $ readNodes "app.conf"
+  either (putStrLn . show) (putStrLn . show) nodesErr
 
 readNodes :: String -> ExceptT AppError IO (NonEmpty Node)
 readNodes configFile =  do
