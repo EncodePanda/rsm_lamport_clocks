@@ -13,7 +13,7 @@ data AppError = AppCPError CPError
 main :: IO ()
 main = do
   nodesErr <- runExceptT $ readNodes "app.conf"
-  either (putStrLn . show) (putStrLn . show) nodesErr
+  either (putStrLn . show) (void . traverse (putStrLn . show)) nodesErr
 
 readNodes :: String -> ExceptT AppError IO (NonEmpty Node)
 readNodes configFile =  do
