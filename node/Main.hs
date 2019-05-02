@@ -1,8 +1,10 @@
 module Main where
 
+import Data.Functor
+import Control.Monad
 import Data.ConfigFile
 import Data.List.NonEmpty
-import Control.Monad.Except
+import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
 import Node
 
@@ -17,6 +19,6 @@ main = do
 
 readNodes :: String -> ExceptT AppError IO (NonEmpty Node)
 readNodes configFile =  do
-  conf <- withExceptT AppCPError $ join $ liftIO $ readfile emptyCP configFile
+  conf <- withExceptT AppCPError $ join $ lift $ readfile emptyCP configFile
   hosts <- withExceptT AppCPError $ get conf "DEFAULT" "hosts"
-  withExceptT AppNodeError $ except $ parseNodeAddresses hosts
+  withExceptT AppNodeError $ ExceptT $ return $ parseNodeAddresses hosts

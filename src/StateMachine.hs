@@ -1,6 +1,6 @@
 module StateMachine where
 
-import Control.Monad.State
+import Control.Monad.Trans.State
 
 data Command = Add Int | Mult Int deriving Show
 
