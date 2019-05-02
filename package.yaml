@@ -25,6 +25,8 @@ dependencies:
 - transformers
 - split
 - MissingH
+- network-transport
+- network-transport-tcp
 
 library:
   source-dirs: src
