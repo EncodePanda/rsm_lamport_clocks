@@ -2,7 +2,7 @@ module StateMachine where
 
 import Control.Monad.State
 
-data Command = Add Int | Mult Int
+data Command = Add Int | Mult Int deriving Show
 
 type TheState = Int
 
