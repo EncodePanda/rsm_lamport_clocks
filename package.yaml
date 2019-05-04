@@ -27,6 +27,7 @@ dependencies:
 - MissingH
 - network-transport
 - network-transport-tcp
+- optparse-applicative
 
 library:
   source-dirs: src
