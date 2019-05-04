@@ -7,6 +7,7 @@ import Data.List.NonEmpty
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Except
 import Node
+import Types
 
 data AppError = AppCPError CPError
               | AppNodeError NodeError
@@ -17,7 +18,7 @@ main = do
   nodesErr <- runExceptT $ readNodes "app.conf"
   either (putStrLn . show) (void . traverse (putStrLn . show)) nodesErr
 
-readNodes :: String -> ExceptT AppError IO (NonEmpty Node)
+readNodes :: String -> ExceptT AppError IO (NonEmpty Address)
 readNodes configFile =  do
   conf <- withExceptT AppCPError $ join $ lift $ readfile emptyCP configFile
   hosts <- withExceptT AppCPError $ get conf "DEFAULT" "hosts"
