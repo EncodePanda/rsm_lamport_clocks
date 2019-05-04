@@ -12,7 +12,10 @@ data Node = Node Host Port
   deriving (Show, Eq)
 
 parseNodeAddresses :: String -> Either NodeError (NonEmpty Node)
-parseNodeAddresses =  fmap fromList . traverse (toNode . (splitOn ":")) . (splitOn ",")
+parseNodeAddresses =  fmap fromList . traverse (parseNodeAddress) . (splitOn ",")
+
+parseNodeAddress :: String -> Either NodeError Node
+parseNodeAddress =  _parse . (splitOn ":")
   where
-    toNode (host:port:[]) = Right $ Node (strip host) (read $ strip port)
-    toNode line = Left $ NodeAddressNotParsable $ show line
+    _parse (host:port:[]) = Right $ Node (strip host) (read $ strip port)
+    _parse line = Left $ NodeAddressNotParsable $ show line
