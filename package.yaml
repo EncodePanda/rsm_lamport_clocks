@@ -22,24 +22,37 @@ description:         Please see the README on GitHub at <https://github.com/gith
 dependencies:
 - base >= 4.7 && < 5
 - ConfigFile
-- mtl
 - transformers
 - split
 - MissingH
+- network-transport
+- network-transport-tcp
+- optparse-applicative
 
 library:
   source-dirs: src
 
 executables:
-  rsm-lamport-clocks-exe:
+  rsm-node:
     main:                Main.hs
-    source-dirs:         app
+    source-dirs:         node
     ghc-options:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
     - rsm-lamport-clocks
+
+  rsm-client:
+    main:                Main.hs
+    source-dirs:         client
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - rsm-lamport-clocks
+
 
 tests:
   rsm-lamport-clocks-test:

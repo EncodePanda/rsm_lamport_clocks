@@ -1,7 +1,7 @@
 module StateMachineSpec where
 
 import StateMachine
-import Control.Monad.State
+import Control.Monad.Trans.State
 import Test.Hspec
 import Test.QuickCheck
 
