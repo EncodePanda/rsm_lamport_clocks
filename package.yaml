@@ -27,6 +27,7 @@ dependencies:
 - split
 - MissingH
 - bytestring
+- binary
 
 library:
   source-dirs: src

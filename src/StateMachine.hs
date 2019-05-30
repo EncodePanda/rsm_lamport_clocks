@@ -1,18 +1,26 @@
+{-# LANGUAGE DeriveGeneric #-}
 module StateMachine where
 
+import Data.Binary
+import GHC.Generics (Generic)
 import Control.Monad.State
-import Data.ByteString
+import Data.ByteString.Lazy
 
-data Command = Add Int | Mult Int deriving Show
+data Command = Add Int | Mult Int deriving (Show, Generic)
 
 type TheState = Int
+
+instance Binary Command
 
 machine :: Command -> State TheState ()
 machine (Add x)  = modify (+x)
 machine (Mult x) = modify (*x)
 
 serialize :: Command -> ByteString
-serialize c = undefined
+serialize c = encode c
 
 deserialize :: ByteString -> Command
-deserialize c = undefined
+deserialize bs = decode bs
+
+roundtrip :: Command -> Command
+roundtrip c = decode . encode $ c
