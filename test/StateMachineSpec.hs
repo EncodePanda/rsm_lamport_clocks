@@ -14,6 +14,10 @@ spec = describe "machine" $ do
     (execState (machine (Add 5) >> machine (Mult 2)) 0) `shouldBe` 10
   it "applying the same series of commands yields the same result" $ do
     property (\events -> (run $ apply events) `shouldBe` (run $ apply events))
+  describe "serialization" $ do
+    it "does roundtrip correctly" $ do
+      property (\event -> roundTrip event `shouldBe` event)
+
 
 apply :: [Command] -> State TheState [()]
 apply cmds = traverse machine cmds

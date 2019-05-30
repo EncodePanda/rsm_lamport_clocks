@@ -6,7 +6,7 @@ import GHC.Generics (Generic)
 import Control.Monad.State
 import Data.ByteString.Lazy
 
-data Command = Add Int | Mult Int deriving (Show, Generic)
+data Command = Add Int | Mult Int deriving (Eq, Show, Generic)
 
 type TheState = Int
 
@@ -22,5 +22,5 @@ serialize c = encode c
 deserialize :: ByteString -> Command
 deserialize bs = decode bs
 
-roundtrip :: Command -> Command
-roundtrip c = decode . encode $ c
+roundTrip :: Command -> Command
+roundTrip c = decode . encode $ c
