@@ -21,6 +21,3 @@ serialize c = encode c
 
 deserialize :: ByteString -> Command
 deserialize bs = decode bs
-
-roundTrip :: Command -> Command
-roundTrip c = decode . encode $ c

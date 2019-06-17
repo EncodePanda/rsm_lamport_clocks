@@ -16,7 +16,7 @@ spec = describe "machine" $ do
     property (\events -> (run $ apply events) `shouldBe` (run $ apply events))
   describe "serialization" $ do
     it "does roundtrip correctly" $ do
-      property (\event -> roundTrip event `shouldBe` event)
+      property (\event -> (deserialize . serialize $ event) `shouldBe` event)
 
 
 apply :: [Command] -> State TheState [()]
