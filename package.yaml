@@ -26,6 +26,8 @@ dependencies:
 - transformers
 - split
 - MissingH
+- bytestring
+- binary
 
 library:
   source-dirs: src
