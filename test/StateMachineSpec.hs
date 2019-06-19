@@ -18,6 +18,14 @@ spec = describe "machine" $ do
     it "does roundtrip correctly" $ do
       property (\event -> (deserialize . serialize $ event) `shouldBe` event)
 
+  describe "tick" $ do
+    it "sets current time greater than incoming external command's Tm" $ do
+      let currentTime = 3
+      (execState (tick (ExternalCommand 5 (Add 2))) currentTime) `shouldBe` 6
+    it "sets current time greater or equal current value if incoming external command's Tm is smaller" $ do
+      let currentTime = 7
+      (execState (tick (ExternalCommand 5 (Add 2))) 7) `shouldBe` 7
+
 
 apply :: [Command] -> State TheState [()]
 apply cmds = traverse machine cmds
