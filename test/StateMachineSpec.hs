@@ -25,6 +25,9 @@ spec = describe "machine" $ do
     it "sets current time greater or equal current value if incoming external command's Tm is smaller" $ do
       let currentTime = 7
       (execState (tick (ExternalCommand 5 (Add 2))) 7) `shouldBe` 7
+    it "bumps the clock by 1 if incoming command is internal" $ do
+      let currentTime = 2
+      (execState (tick (InternalCommand (Add 2))) 7) `shouldBe` 8
 
 
 apply :: [Command] -> State TheState [()]

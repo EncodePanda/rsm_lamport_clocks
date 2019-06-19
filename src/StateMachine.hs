@@ -31,3 +31,4 @@ data IncomingCommand =
 
 tick :: IncomingCommand -> State Clock ()
 tick (ExternalCommand t cmd) = modify (\ct -> if(ct > t) then ct else t + 1)
+tick (InternalCommand cmd) = modify (+ 1)
