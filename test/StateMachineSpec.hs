@@ -22,9 +22,8 @@ spec = describe "machine" $ do
   describe "tick" $ do
     it "sets current time greater or equal current value if incoming external command's Tm is smaller" $ do
       forAll externalCommandGen (\extCmd @ (ExternalCommand externalClock cmd) currentTime -> execState (tick extCmd) currentTime `shouldBe` if(externalClock < currentTime) then currentTime else externalClock + 1)
-    it "bumps the clock by 1 if incoming command is internal" $ do
-      let currentTime = 2
-      forAll internalCommandGen (\cmd -> execState (tick cmd) 1 `shouldBe` 2)
+    it "the clock is bumped by 1 every time an internal incoming command is encountered" $ do
+      forAll internalCommandsAndClockGen (\(clock, cmds) -> execState (sequence ( map tick cmds )) clock `shouldBe` clock + length cmds)
 
 apply :: [Command] -> State TheState [()]
 apply cmds = traverse machine cmds
@@ -37,6 +36,12 @@ instance Arbitrary Command where
     i <- choose(0, 100)
     elements[Add i, Mult i]
 
+internalCommandsAndClockGen :: Gen (Int, [IncomingCommand])
+internalCommandsAndClockGen = do
+  clock <- choose(0, 100)
+  suchThatMap (listOf1 internalCommandGen) (\c -> Just(clock, c))
+
+internalCommandGen :: Gen IncomingCommand
 internalCommandGen = do
     cmd <- arbitrary
     elements[(InternalCommand cmd)]
