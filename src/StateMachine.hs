@@ -21,3 +21,14 @@ serialize c = encode c
 
 deserialize :: ByteString -> Command
 deserialize bs = decode bs
+
+type Clock = Int
+
+data IncomingCommand =
+  ExternalCommand Clock Command
+  | InternalCommand Command
+  deriving (Eq, Show)
+
+tick :: IncomingCommand -> State Clock ()
+tick (ExternalCommand t cmd) = modify (\ct -> if(ct > t) then ct else t + 1)
+tick (InternalCommand cmd) = modify (+ 1)
